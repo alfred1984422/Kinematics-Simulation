@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>高中物理运动学实验室</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
     
     <!-- MathJax 配置和引入 -->
 <script>
@@ -563,15 +564,21 @@ const motionData = {
                 
                 <h3>📝 公式</h3>
                 <div class="formula-box">
-                    <strong>水平方向(匀速):</strong>
+                    <p><strong>水平方向(匀速):</strong></p>
                     $$v_x = v_0\\cos\\theta, \\quad x = v_0\\cos\\theta \\cdot t$$
-                    <strong>竖直方向(竖直上抛):</strong>
+    
+                    <p><strong>竖直方向(竖直上抛):</strong></p>
                     $$v_y = v_0\\sin\\theta - gt$$
                     $$y = v_0\\sin\\theta \\cdot t - \\frac{1}{2}gt^2$$
-                    <strong>特征量:</strong>
-                    $$H = \\frac{(v_0\\sin\\theta)^2}{2g}, \\quad X = \\frac{v_0^2\\sin 2\\theta}{g}, \\quad T = \\frac{2v_0\\sin\\theta}{g}$$
+    
+                    <p><strong>特征量:</strong></p>
+                    <div class="feature-formulas">
+                        $$H = \\frac{(v_0\\sin\\theta)^2}{2g}$$
+                        $$X = \\frac{v_0^2\\sin 2\\theta}{g}$$
+                        $$T = \\frac{2v_0\\sin\\theta}{g}$$
+                    </div>
                 </div>
-                
+             
                 <h3>🎯 重要推论</h3>
                 <ul>
                     <li>$\\theta = 45°$ 时射程最大: $X_{\\max} = \\frac{v_0^2}{g}$</li>
