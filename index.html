@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中物理运动学实验室</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- MathJax 配置和引入 -->
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  chtml: { scale: 0.9 }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        startup: {
+            ready: () => {
+                console.log('MathJax is ready');
+                MathJax.startup.defaultReady();
+            }
+        }
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    
+    <style>
+    /* 样式代码保持不变 */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        #main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        #header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        #header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        #header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        #motion-selector {
+            background: #f8f9fa;
+            padding: 25px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        #motion-selector h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .motion-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .motion-btn {
+            padding: 15px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .motion-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .motion-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        #content-area {
+            padding: 30px;
+        }
+
+        .theory-section {
+            background: #e9f5ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #667eea;
+        }
+
+        .theory-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .theory-section ul {
+            margin-left: 20px;
+            line-height: 2;
+        }
+
+        .formula-box {
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border: 1px solid #b3d7ff;
+            font-size: 1.15em;
+            line-height: 2.2;
+        }
+
+        .controls-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .controls-section h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .control-group label {
+            width: 180px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .control-group input[type="range"] {
+            flex-grow: 1;
+            cursor: pointer;
+            height: 8px;
+        }
+
+        .control-group span {
+            width: 100px;
+            font-family: monospace;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid #ddd;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        #animate-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+
+        #animate-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        #animate-button:disabled {
+            background: #9e9e9e;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .visualization-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .animation-box, .diagram-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .animation-box h3, .diagram-box h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        #animation-canvas, #diagram-canvas {
+            width: 100%;
+            height: 350px;
+            background: #f5f5f5;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        .diagram-analysis {
+            background: #fff9e6;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            border-left: 3px solid #ffc107;
+            font-size: 0.95em;
+            line-height: 1.8;
+        }
+
+        .info-panel {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #ffc107;
+            margin-top: 15px;
+        }
+
+        .info-panel strong {
+            color: #856404;
+        }
+
+        @media (max-width: 1024px) {
+            .visualization-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #header h1 {
+                font-size: 1.8em;
+            }
+            
+            .motion-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .control-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .control-group label {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="main-container">
+    <div id="header">
+        <h1>🚀 高中物理运动学实验室</h1>
+        <p>通过交互式可视化,深度理解八大运动类型的本质特征与公式体系</p>
+    </div>
+
+    <div id="motion-selector">
+        <h2>选择运动类型</h2>
+        <div class="motion-buttons">
+            <button class="motion-btn active" data-motion="uniform">匀速直线运动</button>
+            <button class="motion-btn" data-motion="uniform-acc">匀加速直线运动</button>
+            <button class="motion-btn" data-motion="uniform-dec">匀减速直线运动</button>
+            <button class="motion-btn" data-motion="freefall">自由落体运动</button>
+            <button class="motion-btn" data-motion="vertical-up">竖直上抛运动</button>
+            <button class="motion-btn" data-motion="horizontal">平抛运动</button>
+            <button class="motion-btn" data-motion="projectile">斜抛运动</button>
+            <button class="motion-btn" data-motion="circular">匀速圆周运动</button>
+        </div>
+    </div>
+
+    <div id="content-area">
+        <!-- 动态内容将在这里插入 -->
+    </div>
+</div>
+
+<script>
+// 运动类型数据库
+const motionData = {
+    uniform: {
+        title: "匀速直线运动",
+        theory: `
+            <div class="theory-section">
+                <h3>📐 运动特征</h3>
+                <ul>
+                    <li><strong>加速度:</strong> $a = 0$ (速度大小和方向都不变)</li>
+                    <li><strong>轨迹:</strong> 直线,位移等于路程</li>
+                    <li><strong>速度:</strong> 恒定不变</li>
+                </ul>
+                
+                <h3>📝 公式</h3>
+                <div class="formula-box">
+                    $$v = v_0$$ 
+                    $$S = v_0 t$$
+                </div>
+                
+                <h3>🎯 重要推论</h3>
+                <ul>
+                    <li>任意相等时间内路程相等: $S_1 = S_2 = S_3 = \\cdots$</li>
+                    <li>平均速度等于瞬时速度: $\\bar{v} = v_0$</li>
+                    <li>$S$-$t$ 图像为过原点的直线,斜率等于速度</li>
+                </ul>
+            </div>
+        `,
+        controls: [
+            {id: 'v0', label: '速度 v₀ (m/s)', min: -10, max: 10, step: 0.5, value: 5, unit: 'm/s'},
+            {id: 't', label: '时间 (s)', min: 1, max: 10, step: 0.5, value: 5, unit: 's'}
+        ],
+        diagramType: 'st',
+        diagramAnalysis: '<strong>图像解析:</strong> $S$-$t$ 图为过原点的直线。斜率 $k = v_0$ 表示速度恒定。直线越陡,速度越大。图像特征:直线、斜率恒定。'
+    },
+    
+    'uniform-acc': {
+        title: "匀加速直线运动",
+        theory: `
+            <div class="theory-section">
+                <h3>📐 运动特征</h3>
+                <ul>
+                    <li><strong>加速度:</strong> $a > 0$ 且恒定(与速度方向相同)</li>
+                    <li><strong>速度变化:</strong> 随时间均匀增大</li>
+                    <li><strong>路程变化:</strong> 随时间二次增大(抛物线)</li>
+                </ul>
+                
+                <h3>📝 公式</h3>
+                <div class="formula-box">
+                    $$v = v_0 + at$$
+                    $$S = v_0 t + \\frac{1}{2}at^2$$
+                    $$v^2 - v_0^2 = 2aS$$
+                    $$\\bar{v} = \\frac{v_0 + v}{2}$$
+                </div>
+                
+                <h3>🎯 重要推论</h3>
+                <ul>
+                    <li>连续相等时间路程差: $\\Delta S = aT^2$</li>
+                    <li>中间时刻速度: $v_{t/2} = \\frac{v_0 + v}{2} = \\bar{v}$</li>
+                    <li>中间位置速度: $v_{S/2} = \\sqrt{\\frac{v_0^2 + v^2}{2}}$</li>
+                    <li>任意时刻速度增量: $\\Delta v = at$</li>
+                </ul>
+            </div>
+        `,
+        controls: [
+            {id: 'v0', label: '初速度 v₀ (m/s)', min: 0, max: 10, step: 0.5, value: 2, unit: 'm/s'},
+            {id: 'a', label: '加速度 a (m/s²)', min: 0.5, max: 5, step: 0.5, value: 2, unit: 'm/s²'},
+            {id: 't', label: '时间 (s)', min: 1, max: 10, step: 0.5, value: 5, unit: 's'}
+        ],
+        diagramType: 'vt',
+        diagramAnalysis: '<strong>图像解析:</strong> $v$-$t$ 图为倾斜直线。斜率 $k = a > 0$ 表示加速度恒定。图线与 $t$ 轴围成的面积表示路程 $S$。特征:直线上升、斜率为正。'
+    },
+    
+    'uniform-dec': {
+        title: "匀减速直线运动",
+        theory: `
+            <div class="theory-section">
+                <h3>📐 运动特征</h3>
+                <ul>
+                    <li><strong>加速度:</strong> $a < 0$ 且恒定(与速度方向相反)</li>
+                    <li><strong>速度变化:</strong> 随时间均匀减小,直至为零</li>
+                    <li><strong>路程变化:</strong> 增加速率逐渐减小</li>
+                </ul>
+                
+                <h3>📝 公式</h3>
+                <div class="formula-box">
+                    $$v = v_0 - at \\quad (a取正值)$$
+                    $$S = v_0 t - \\frac{1}{2}at^2$$
+                    $$v^2 - v_0^2 = -2aS$$
+                    $$t_{停} = \\frac{v_0}{a}, \\quad S_{停} = \\frac{v_0^2}{2a}$$
+                </div>
+                
+                <h3>🎯 重要推论</h3>
+                <ul>
+                    <li>若给定时间 $t > t_{停}$,物体在 $t_{停}$ 时刻已停止</li>
+                    <li>实际路程取 $S = \\min\\left(v_0 t - \\frac{1}{2}at^2, S_{停}\\right)$</li>
+                    <li>刹车问题中必须先判断是否停止</li>
+                    <li>连续相等时间路程差: $|\\Delta S| = aT^2$</li>
+                </ul>
+            </div>
+        `,
+        controls: [
+            {id: 'v0', label: '初速度 v₀ (m/s)', min: 5, max: 20, step: 1, value: 10, unit: 'm/s'},
+            {id: 'a', label: '加速度大小 a (m/s²)', min: 0.5, max: 5, step: 0.5, value: 2, unit: 'm/s²'},
+            {id: 't', label: '时间 (s)', min: 1, max: 10, step: 0.5, value: 6, unit: 's'}
+        ],
+        diagramType: 'vt',
+        diagramAnalysis: '<strong>图像解析:</strong> $v$-$t$ 图为下降直线,斜率 $k = -a < 0$。与 $t$ 轴交点为停止时刻,之后速度保持为 0。特征:直线下降、与横轴相交。'
+    },
+    
+    freefall: {
+        title: "自由落体运动",
+        theory: `
+            <div class="theory-section">
+                <h3>📐 运动特征</h3>
+                <ul>
+                    <li><strong>受力:</strong> 只受重力作用</li>
+                    <li><strong>初速度:</strong> $v_0 = 0$</li>
+                    <li><strong>加速度:</strong> $a = g = 9.8 \\text{ m/s}^2$ (竖直向下)</li>
+                    <li><strong>运动性质:</strong> 初速度为零的匀加速直线运动</li>
+                </ul>
+                
+                <h3>📝 公式</h3>
+                <div class="formula-box">
+                    $$v = gt$$
+                    $$h = \\frac{1}{2}gt^2$$
+                    $$v^2 = 2gh$$
+                    <div style="font-size: 0.9em; color: #666; margin-top: 5px;">(向下为正方向)</div>
+                </div>
+                
+                <h3>🎯 重要推论</h3>
+                <ul>
+                    <li>连续相等时间内下落高度比: $h_1:h_2:h_3:\\cdots = 1:3:5:\\cdots$</li>
+                    <li>通过连续相等高度时间比: $t_1:t_2:t_3:\\cdots = 1:(\\sqrt{2}-1):(\\sqrt{3}-\\sqrt{2}):\\cdots$</li>
+                    <li>第 $n$ 秒内下落高度: $h_n = \\frac{1}{2}g(2n-1)$</li>
+                </ul>
+            </div>
+        `,
+        controls: [
+            {id: 't', label: '时间 (s)', min: 0.5, max: 5, step: 0.5, value: 3, unit: 's'}
+        ],
+        diagramType: 'ht',
+        diagramAnalysis: '<strong>图像解析:</strong> $h$-$t$ 图为开口向下的抛物线,起点在原点。曲线斜率不断增大,表示速度不断增大。特征:二次函数、开口向下。'
+    },
+    
+    'vertical-up': {
+        title: "竖直上抛运动",
+        theory: `
+            <div class="theory-section">
+                <h3>📐 运动特征</h3>
+                <ul>
+                    <li><strong>受力:</strong> 只受重力作用</li>
+                    <li><strong>初速度:</strong> $v_0 > 0$ (竖直向上)</li>
+                    <li><strong>加速度:</strong> $a = -g = -9.8 \\text{ m/s}^2$ (向上为正)</li>
+                    <li><strong>运动过程:</strong> 先匀减速上升,后匀加速下降</li>
+                </ul>
+                
+                <h3>📝 公式</h3>
+                <div class="formula-box">
+                    $$v = v_0 - gt$$
+                    $$h = v_0 t - \\frac{1}{2}gt^2$$
+                    $$v^2 - v_0^2 = -2gh$$
+                    <div style="font-size: 0.9em; color: #666; margin-top: 5px;">(向上为正方向)</div>
+                </div>
+                
+                <h3>🎯 重要推论</h3>
+                <ul>
+                    <li>上升到最高点时间: $t_{上} = \\frac{v_0}{g}$</li>
+                    <li>最大高度: $H_{\\max} = \\frac{v_0^2}{2g}$</li>
+                    <li>上升时间 = 下降时间: $t_{上} = t_{下}$</li>
+                    <li>回到抛出点速度: $v = -v_0$ (大小相等,方向相反)</li>
+                    <li>对称性: 上升过程与下降过程完全对称</li>
+                </ul>
+            </div>
+        `,
+        controls: [
+            {id: 'v0', label: '初速度 v₀ (m/s)', min: 5, max: 30, step: 1, value: 20, unit: 'm/s'},
+            {id: 't', label: '时间 (s)', min: 1, max: 8, step: 0.5, value: 5, unit: 's'}
+        ],
+        diagramType: 'ht',
+        diagramAnalysis: '<strong>图像解析:</strong> $h$-$t$ 图为开口向下的抛物线,先上升至最高点,后下降。最高点处切线水平 $(v=0)$。关于最高点时刻对称。'
+    },
+    
+    horizontal: {
+        title: "平抛运动",
+        theory: `
+            <div class="theory-section">
+                <h3>📐 运动特征</h3>
+                <ul>
+                    <li><strong>受力:</strong> 只受重力,$a = g$ (竖直向下)</li>
+                    <li><strong>初速度:</strong> $v_0$ 水平方向</li>
+                    <li><strong>运动性质:</strong> 匀变速曲线运动</li>
+                    <li><strong>轨迹:</strong> 抛物线</li>
+                </ul>
+                
+                <h3>📝 公式</h3>
+                <div class="formula-box">
+                    <strong>水平方向(匀速):</strong>
+                    $$v_x = v_0, \\quad x = v_0 t$$
+                    <strong>竖直方向(自由落体):</strong>
+                    $$v_y = gt, \\quad y = \\frac{1}{2}gt^2$$
+                    <strong>合成:</strong>
+                    $$v = \\sqrt{v_0^2 + (gt)^2}$$
+                    $$y = \\frac{gx^2}{2v_0^2}$$
+                </div>
+                
+                <h3>🎯 重要推论</h3>
+                <ul>
+                    <li>速度偏角: $\\tan\\alpha = \\frac{v_y}{v_x} = \\frac{gt}{v_0}$</li>
+                    <li>位移偏角: $\\tan\\beta = \\frac{y}{x} = \\frac{gt}{2v_0}$</li>
+                    <li>关系: $\\tan\\alpha = 2\\tan\\beta$</li>
+                    <li>飞行时间由高度决定: $t = \\sqrt{\\frac{2h}{g}}$</li>
+                    <li>水平射程: $X = v_0\\sqrt{\\frac{2h}{g}}$</li>
+                </ul>
+            </div>
+        `,
+        controls: [
+            {id: 'v0', label: '初速度 v₀ (m/s)', min: 5, max: 30, step: 1, value: 15, unit: 'm/s'},
+            {id: 'h', label: '抛出高度 (m)', min: 5, max: 50, step: 5, value: 20, unit: 'm'}
+        ],
+        diagramType: 'xy',
+        diagramAnalysis: '<strong>图像解析:</strong> 轨迹为抛物线,开口向下。水平方向匀速,竖直方向加速。速度方向沿切线方向,不断变化,与水平夹角增大。'
+    },
+    
+    projectile: {
+        title: "斜抛运动",
+        theory: `
+            <div class="theory-section">
+                <h3>📐 运动特征</h3>
+                <ul>
+                    <li><strong>受力:</strong> 只受重力,$a = g$ (竖直向下)</li>
+                    <li><strong>初速度:</strong> $v_0$ 与水平方向成角度 $\\theta$</li>
+                    <li><strong>运动性质:</strong> 匀变速曲线运动</li>
+                    <li><strong>轨迹:</strong> 抛物线(对称)</li>
+                </ul>
+                
+                <h3>📝 公式</h3>
+                <div class="formula-box">
+                    <strong>水平方向(匀速):</strong>
+                    $$v_x = v_0\\cos\\theta, \\quad x = v_0\\cos\\theta \\cdot t$$
+                    <strong>竖直方向(竖直上抛):</strong>
+                    $$v_y = v_0\\sin\\theta - gt$$
+                    $$y = v_0\\sin\\theta \\cdot t - \\frac{1}{2}gt^2$$
+                    <strong>特征量:</strong>
+                    $$H = \\frac{(v_0\\sin\\theta)^2}{2g}, \\quad X = \\frac{v_0^2\\sin 2\\theta}{g}, \\quad T = \\frac{2v_0\\sin\\theta}{g}$$
+                </div>
+                
+                <h3>🎯 重要推论</h3>
+                <ul>
+                    <li>$\\theta = 45°$ 时射程最大: $X_{\\max} = \\frac{v_0^2}{g}$</li>
+                    <li>上升时间 = 下降时间 = $\\frac{T}{2}$</li>
+                    <li>落地速度大小等于初速度: $v_{落} = v_0$</li>
+                    <li>互补角 $(\\theta$ 和 $90° - \\theta)$ 射程相等</li>
+                    <li>轨迹关于最高点对称</li>
+                </ul>
+            </div>
+        `,
+        controls: [
+            {id: 'v0', label: '初速度 v₀ (m/s)', min: 10, max: 40, step: 2, value: 20, unit: 'm/s'},
+            {id: 'angle', label: '抛射角 θ (°)', min: 15, max: 75, step: 5, value: 45, unit: '°'}
+        ],
+        diagramType: 'xy',
+        diagramAnalysis: '<strong>图像解析:</strong> 轨迹为抛物线,关于最高点对称。$\\theta=45°$ 时射程最大。互补角射程相等。速度方向沿切线,在最高点水平。'
+    },
+    
+    circular: {
+        title: "匀速圆周运动",
+        theory: `
+            <div class="theory-section">
+                <h3>📐 运动特征</h3>
+                <ul>
+                    <li><strong>速率:</strong> $v$ 恒定,但速度方向时刻改变</li>
+                    <li><strong>加速度:</strong> 向心加速度 $a_n$,方向指向圆心</li>
+                    <li><strong>运动性质:</strong> 变速曲线运动</li>
+                    <li><strong>轨迹:</strong> 圆</li>
+                </ul>
+                
+                <h3>📝 公式</h3>
+                <div class="formula-box">
+                    $$v = \\frac{2\\pi r}{T} = \\omega r$$
+                    $$\\omega = \\frac{2\\pi}{T} = 2\\pi f$$
+                    $$a_n = \\frac{v^2}{r} = \\omega^2 r = \\frac{4\\pi^2 r}{T^2}$$
+                    $$F_n = ma_n = \\frac{mv^2}{r} = m\\omega^2 r$$
+                </div>
+                
+                <h3>🎯 重要推论</h3>
+                <ul>
+                    <li>向心力是效果力,由实际力的合力提供</li>
+                    <li>同轴转动: $\\omega$ 相同,$v \\propto r$, $a_n \\propto r$</li>
+                    <li>皮带传动: $v$ 相同,$\\omega \\propto \\frac{1}{r}$, $a_n \\propto \\frac{1}{r}$</li>
+                    <li>匀速圆周运动不是匀变速运动(加速度方向变化)</li>
+                    <li>临界问题: $F_n = F_{向心力}$ (由重力、弹力、摩擦力等提供)</li>
+                </ul>
+            </div>
+        `,
+        controls: [
+            {id: 'r', label: '半径 r (m)', min: 1, max: 5, step: 0.5, value: 2, unit: 'm'},
+            {id: 'T', label: '周期 T (s)', min: 0.5, max: 4, step: 0.5, value: 2, unit: 's'}
+        ],
+        diagramType: 'circular',
+        diagramAnalysis: '<strong>图像解析:</strong> 圆形轨迹,速度方向沿切线不断变化,向心加速度始终指向圆心。虽然速率恒定,但因速度方向改变,属于变速运动。'
+    }
+};
+
+// 全局变量
+let currentMotion = 'uniform';
+let animationId = null;
+
+// ===== 添加这个辅助函数 =====
+function renderMath(element) {
+    if(window.MathJax && window.MathJax.typesetPromise) {
+        const elements = element ? [element] : undefined;
+        MathJax.typesetPromise(elements).catch((err) => {
+            console.log('MathJax 渲染错误:', err);
+        });
+    } else {
+        setTimeout(() => {
+            if(window.MathJax && window.MathJax.typesetPromise) {
+                const elements = element ? [element] : undefined;
+                MathJax.typesetPromise(elements);
+            }
+        }, 500);
+    }
+}
+
+// 初始化
+document.addEventListener('DOMContentLoaded', () => {
+    setupMotionButtons();
+    loadMotion('uniform');
+});
+
+// 设置运动类型按钮
+function setupMotionButtons() {
+    const buttons = document.querySelectorAll('.motion-btn');
+    buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            loadMotion(btn.dataset.motion);
+        });
+    });
+}
+
+// 加载运动类型
+function loadMotion(motionType) {
+    currentMotion = motionType;
+    const data = motionData[motionType];
+    const contentArea = document.getElementById('content-area');
+    
+    let html = `
+        ${data.theory}
+        
+        <div class="controls-section">
+            <h3>⚙️ 参数调节</h3>
+            ${data.controls.map(ctrl => `
+                <div class="control-group">
+                    <label for="${ctrl.id}">${ctrl.label}:</label>
+                    <input type="range" id="${ctrl.id}" 
+                           min="${ctrl.min}" max="${ctrl.max}" 
+                           step="${ctrl.step}" value="${ctrl.value}">
+                    <span id="${ctrl.id}-value">${ctrl.value.toFixed(1)} ${ctrl.unit}</span>
+                </div>
+            `).join('')}
+            <button id="animate-button">🎬 开始模拟</button>
+        </div>
+        
+        <div class="visualization-section">
+            <div class="animation-box">
+                <h3>🎨 运动动画</h3>
+                <canvas id="animation-canvas"></canvas>
+            </div>
+            <div class="diagram-box">
+                <h3>📊 坐标系解析图</h3>
+                <canvas id="diagram-canvas"></canvas>
+                <div class="diagram-analysis">${data.diagramAnalysis}</div>
+            </div>
+        </div>
+        
+        <div class="info-panel">
+            <strong>📊 计算结果:</strong> <span id="result-info">调整参数后点击"开始模拟"查看结果</span>
+        </div>
+    `;
+    
+    contentArea.innerHTML = html;
+    
+    // 重新渲染 MathJax
+    renderMath(contentArea);
+    
+    // 绑定事件
+    data.controls.forEach(ctrl => {
+        const slider = document.getElementById(ctrl.id);
+        const valueDisplay = document.getElementById(`${ctrl.id}-value`);
+        slider.addEventListener('input', (e) => {
+            valueDisplay.textContent = `${parseFloat(e.target.value).toFixed(1)} ${ctrl.unit}`;
+        });
+    });
+    
+    document.getElementById('animate-button').addEventListener('click', runAnimation);
+}
+
+// 运行动画
+function runAnimation() {
+    const data = motionData[currentMotion];
+    const params = {};
+    
+    data.controls.forEach(ctrl => {
+        params[ctrl.id] = parseFloat(document.getElementById(ctrl.id).value);
+    });
+    
+    // 计算数据
+    let result = calculateMotionData(params);
+    
+    // 更新结果信息
+    const resultInfo = document.getElementById('result-info');
+    resultInfo.innerHTML = result.info;
+    renderMath(resultInfo);
+    
+    // 绘制坐标系解析图
+    drawDiagram(params, result);
+    
+    // 启动动画
+    drawAnimation(params, result);
+}
+
+// 计算运动数据
+function calculateMotionData(params) {
+    const motion = currentMotion;
+    const g = 9.8;
+    
+    if(motion === 'uniform') {
+        const {v0, t} = params;
+        const finalS = v0 * t;
+        return {
+            info: `$t = ${t.toFixed(1)}$ s 时,路程 $S = ${finalS.toFixed(2)}$ m`
+        };
+        
+    } else if(motion === 'uniform-acc') {
+        const {v0, a, t} = params;
+        const vEnd = v0 + a * t;
+        const S = v0 * t + 0.5 * a * t * t;
+        return {
+            info: `末速度 $v = ${vEnd.toFixed(2)}$ m/s, 路程 $S = ${S.toFixed(2)}$ m`
+        };
+        
+    } else if(motion === 'uniform-dec') {
+        const {v0, a, t} = params;
+        const tStop = v0 / a;
+        const actualT = Math.min(t, tStop);
+        const S = v0 * actualT - 0.5 * a * actualT * actualT;
+        const status = t > tStop ? `(已停止,停止时间 $= ${tStop.toFixed(2)}$ s)` : '';
+        return {
+            info: `路程 $S = ${S.toFixed(2)}$ m ${status}`
+        };
+        
+    } else if(motion === 'freefall') {
+        const {t} = params;
+        const h = 0.5 * g * t * t;
+        const v = g * t;
+        return {
+            info: `下落高度 $h = ${h.toFixed(2)}$ m, 末速度 $v = ${v.toFixed(2)}$ m/s`
+        };
+        
+    } else if(motion === 'vertical-up') {
+        const {v0, t} = params;
+        const tPeak = v0 / g;
+        const hMax = (v0 * v0) / (2 * g);
+        return {
+            info: `最大高度 $H = ${hMax.toFixed(2)}$ m, 上升时间 $= ${tPeak.toFixed(2)}$ s`
+        };
+        
+    } else if(motion === 'horizontal') {
+        const {v0, h} = params;
+        const tFall = Math.sqrt(2 * h / g);
+        const range = v0 * tFall;
+        return {
+            info: `飞行时间 $t = ${tFall.toFixed(2)}$ s, 水平射程 $X = ${range.toFixed(2)}$ m`
+        };
+        
+    } else if(motion === 'projectile') {
+        const {v0, angle} = params;
+        const theta = (angle * Math.PI) / 180;
+        const vy0 = v0 * Math.sin(theta);
+        const tTotal = (2 * vy0) / g;
+        const range = (v0 * v0 * Math.sin(2 * theta)) / g;
+        const hMax = (vy0 * vy0) / (2 * g);
+        return {
+            info: `射程 $X = ${range.toFixed(2)}$ m, 射高 $H = ${hMax.toFixed(2)}$ m, 飞行时间 $= ${tTotal.toFixed(2)}$ s`
+        };
+        
+    } else if(motion === 'circular') {
+        const {r, T} = params;
+        const omega = (2 * Math.PI) / T;
+        const v = omega * r;
+        const an = (v * v) / r;
+        return {
+            info: `线速度 $v = ${v.toFixed(2)}$ m/s, 角速度 $\\omega = ${omega.toFixed(2)}$ rad/s, 向心加速度 $a_n = ${an.toFixed(2)}$ m/s²`
+        };
+    }
+}
+
+// 绘制坐标系解析图
+function drawDiagram(params, result) {
+    const canvas = document.getElementById('diagram-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    const motion = currentMotion;
+    const g = 9.8;
+    
+    // 设置样式
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 2;
+    ctx.font = '14px Arial';
+    ctx.fillStyle = '#333';
+    
+    if(motion === 'uniform' || motion === 'uniform-acc' || motion === 'uniform-dec') {
+        // S-t 或 v-t 图
+        const marginLeft = 60;
+        const marginBottom = 50;
+        const marginTop = 30;
+        const marginRight = 30;
+        
+        const plotWidth = canvas.width - marginLeft - marginRight;
+        const plotHeight = canvas.height - marginTop - marginBottom;
+        
+        // 绘制坐标轴
+        ctx.beginPath();
+        ctx.moveTo(marginLeft, marginTop);
+        ctx.lineTo(marginLeft, canvas.height - marginBottom);
+        ctx.lineTo(canvas.width - marginRight, canvas.height - marginBottom);
+        ctx.stroke();
+        
+        // 坐标轴箭头
+        ctx.beginPath();
+        ctx.moveTo(canvas.width - marginRight, canvas.height - marginBottom);
+        ctx.lineTo(canvas.width - marginRight - 8, canvas.height - marginBottom - 5);
+        ctx.lineTo(canvas.width - marginRight - 8, canvas.height - marginBottom + 5);
+        ctx.closePath();
+        ctx.fill();
+        
+        ctx.beginPath();
+        ctx.moveTo(marginLeft, marginTop);
+        ctx.lineTo(marginLeft - 5, marginTop + 8);
+        ctx.lineTo(marginLeft + 5, marginTop + 8);
+        ctx.closePath();
+        ctx.fill();
+        
+        // 坐标轴标签
+        ctx.font = 'bold 16px Arial';
+        ctx.fillText('t (s)', canvas.width - marginRight + 5, canvas.height - marginBottom + 20);
+        
+        if(motion === 'uniform') {
+            ctx.fillText('S (m)', marginLeft - 15, marginTop - 10);
+            
+            const {v0, t} = params;
+            const maxT = t;
+            const maxS = Math.abs(v0 * t);
+            
+            // 绘制刻度
+            for(let i = 0; i <= 5; i++) {
+                const tVal = (i / 5) * maxT;
+                const sVal = (i / 5) * maxS;
+                
+                const xPos = marginLeft + (i / 5) * plotWidth;
+                const yPos = canvas.height - marginBottom - (i / 5) * plotHeight;
+                
+                ctx.fillStyle = '#666';
+                ctx.font = '12px Arial';
+                ctx.fillText(tVal.toFixed(1), xPos - 10, canvas.height - marginBottom + 20);
+                ctx.fillText(sVal.toFixed(0), marginLeft - 40, yPos + 5);
+            }
+            
+            // 绘制 S-t 直线
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(marginLeft, canvas.height - marginBottom);
+            ctx.lineTo(canvas.width - marginRight, marginTop);
+            ctx.stroke();
+            
+        } else {
+            ctx.fillText('v (m/s)', marginLeft - 15, marginTop - 10);
+            
+            const {v0, a, t} = params;
+            const realA = motion === 'uniform-dec' ? -a : a;
+            const maxT = motion === 'uniform-dec' ? Math.min(t, v0 / a) : t;
+            const vEnd = v0 + realA * maxT;
+            const maxV = Math.max(Math.abs(v0), Math.abs(vEnd));
+            
+            // 绘制刻度
+            for(let i = 0; i <= 5; i++) {
+                const tVal = (i / 5) * t;
+                const vVal = (i / 5) * maxV;
+                
+                const xPos = marginLeft + (i / 5) * plotWidth;
+                const yPos = canvas.height - marginBottom - (i / 5) * plotHeight;
+                
+                ctx.fillStyle = '#666';
+                ctx.font = '12px Arial';
+                ctx.fillText(tVal.toFixed(1), xPos - 10, canvas.height - marginBottom + 20);
+                ctx.fillText(vVal.toFixed(1), marginLeft - 45, yPos + 5);
+            }
+            
+            // 绘制 v-t 直线
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            const scaleT = plotWidth / t;
+            const scaleV = plotHeight / maxV;
+            
+            for(let i = 0; i <= 100; i++) {
+                const ti = (i / 100) * t;
+                let vi;
+                
+                if(motion === 'uniform-dec' && ti > v0 / a) {
+                    vi = 0;
+                } else {
+                    vi = v0 + realA * ti;
+                }
+                
+                const x = marginLeft + ti * scaleT;
+                const y = canvas.height - marginBottom - vi * scaleV;
+                
+                if(i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+        }
+        
+    } else if(motion === 'freefall' || motion === 'vertical-up') {
+        // h-t 图
+        const marginLeft = 60;
+        const marginBottom = 50;
+        const marginTop = 30;
+        const marginRight = 30;
+        
+        const plotWidth = canvas.width - marginLeft - marginRight;
+        const plotHeight = canvas.height - marginTop - marginBottom;
+        
+        // 绘制坐标轴
+        ctx.beginPath();
+        ctx.moveTo(marginLeft, marginTop);
+        ctx.lineTo(marginLeft, canvas.height - marginBottom);
+        ctx.lineTo(canvas.width - marginRight, canvas.height - marginBottom);
+        ctx.stroke();
+        
+        // 箭头
+        ctx.beginPath();
+        ctx.moveTo(canvas.width - marginRight, canvas.height - marginBottom);
+        ctx.lineTo(canvas.width - marginRight - 8, canvas.height - marginBottom - 5);
+        ctx.lineTo(canvas.width - marginRight - 8, canvas.height - marginBottom + 5);
+        ctx.closePath();
+        ctx.fill();
+        
+        ctx.beginPath();
+        ctx.moveTo(marginLeft, marginTop);
+        ctx.lineTo(marginLeft - 5, marginTop + 8);
+        ctx.lineTo(marginLeft + 5, marginTop + 8);
+        ctx.closePath();
+        ctx.fill();
+        
+        // 标签
+        ctx.font = 'bold 16px Arial';
+        ctx.fillText('t (s)', canvas.width - marginRight + 5, canvas.height - marginBottom + 20);
+        ctx.fillText('h (m)', marginLeft - 15, marginTop - 10);
+        
+        let maxT, maxH;
+        if(motion === 'freefall') {
+            const {t} = params;
+            maxT = t;
+            maxH = 0.5 * g * t * t;
+        } else {
+            const {v0, t} = params;
+            maxT = t;
+            maxH = (v0 * v0) / (2 * g);
+        }
+        
+        // 刻度
+        for(let i = 0; i <= 5; i++) {
+            const tVal = (i / 5) * maxT;
+            const hVal = (i / 5) * maxH;
+            
+            const xPos = marginLeft + (i / 5) * plotWidth;
+            const yPos = canvas.height - marginBottom - (i / 5) * plotHeight;
+            
+            ctx.fillStyle = '#666';
+            ctx.font = '12px Arial';
+            ctx.fillText(tVal.toFixed(1), xPos - 10, canvas.height - marginBottom + 20);
+            ctx.fillText(hVal.toFixed(0), marginLeft - 40, yPos + 5);
+        }
+        
+        // 绘制抛物线
+        ctx.strokeStyle = '#667eea';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        
+        const scaleT = plotWidth / maxT;
+        const scaleH = plotHeight / maxH;
+        
+        for(let i = 0; i <= 100; i++) {
+            const ti = (i / 100) * maxT;
+            let hi;
+            
+            if(motion === 'freefall') {
+                hi = 0.5 * g * ti * ti;
+            } else {
+                const {v0} = params;
+                hi = v0 * ti - 0.5 * g * ti * ti;
+                if(hi < 0) hi = 0;
+            }
+            
+            const x = marginLeft + ti * scaleT;
+            const y = canvas.height - marginBottom - hi * scaleH;
+            
+            if(i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        
+    } else if(motion === 'horizontal' || motion === 'projectile') {
+        // x-y 轨迹图
+        const marginLeft = 60;
+        const marginBottom = 50;
+        const marginTop = 30;
+        const marginRight = 30;
+        
+        const plotWidth = canvas.width - marginLeft - marginRight;
+        const plotHeight = canvas.height - marginTop - marginBottom;
+        
+        // 坐标轴
+        ctx.beginPath();
+        ctx.moveTo(marginLeft, canvas.height - marginBottom);
+        ctx.lineTo(canvas.width - marginRight, canvas.height - marginBottom);
+        ctx.moveTo(marginLeft, canvas.height - marginBottom);
+        ctx.lineTo(marginLeft, marginTop);
+        ctx.stroke();
+        
+        // 箭头
+        ctx.beginPath();
+        ctx.moveTo(canvas.width - marginRight, canvas.height - marginBottom);
+        ctx.lineTo(canvas.width - marginRight - 8, canvas.height - marginBottom - 5);
+        ctx.lineTo(canvas.width - marginRight - 8, canvas.height - marginBottom + 5);
+        ctx.closePath();
+        ctx.fill();
+        
+        ctx.beginPath();
+        ctx.moveTo(marginLeft, marginTop);
+        ctx.lineTo(marginLeft - 5, marginTop + 8);
+        ctx.lineTo(marginLeft + 5, marginTop + 8);
+        ctx.closePath();
+        ctx.fill();
+        
+        // 标签
+        ctx.font = 'bold 16px Arial';
+        ctx.fillText('x (m)', canvas.width - marginRight + 5, canvas.height - marginBottom + 20);
+        ctx.fillText('y (m)', marginLeft - 15, marginTop - 10);
+        
+        let maxX, maxY;
+        
+        if(motion === 'horizontal') {
+            const {v0, h} = params;
+            const tFall = Math.sqrt(2 * h / g);
+            maxX = v0 * tFall;
+            maxY = h;
+        } else {
+            const {v0, angle} = params;
+            const theta = (angle * Math.PI) / 180;
+            const vx = v0 * Math.cos(theta);
+            const vy0 = v0 * Math.sin(theta);
+            maxX = (v0 * v0 * Math.sin(2 * theta)) / g;
+            maxY = (vy0 * vy0) / (2 * g);
+        }
+        
+        // 刻度
+        for(let i = 0; i <= 5; i++) {
+            const xVal = (i / 5) * maxX;
+            const yVal = (i / 5) * maxY;
+            
+            const xPos = marginLeft + (i / 5) * plotWidth;
+            const yPos = canvas.height - marginBottom - (i / 5) * plotHeight;
+            
+            ctx.fillStyle = '#666';
+            ctx.font = '12px Arial';
+            ctx.fillText(xVal.toFixed(0), xPos - 10, canvas.height - marginBottom + 20);
+            ctx.fillText(yVal.toFixed(0), marginLeft - 40, yPos + 5);
+        }
+        
+        // 绘制抛物线轨迹
+        ctx.strokeStyle = '#667eea';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        
+        const scaleX = plotWidth / maxX;
+        const scaleY = plotHeight / maxY;
+        
+        if(motion === 'horizontal') {
+            const {v0, h} = params;
+            const tFall = Math.sqrt(2 * h / g);
+            
+            for(let i = 0; i <= 100; i++) {
+                const ti = (i / 100) * tFall;
+                const xi = v0 * ti;
+                const yi = h - 0.5 * g * ti * ti;
+                
+                const x = marginLeft + xi * scaleX;
+                const y = canvas.height - marginBottom - yi * scaleY;
+                
+                if(i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+        } else {
+            const {v0, angle} = params;
+            const theta = (angle * Math.PI) / 180;
+            const vx = v0 * Math.cos(theta);
+            const vy0 = v0 * Math.sin(theta);
+            const tTotal = (2 * vy0) / g;
+            
+            for(let i = 0; i <= 100; i++) {
+                const ti = (i / 100) * tTotal;
+                const xi = vx * ti;
+                const yi = vy0 * ti - 0.5 * g * ti * ti;
+                
+                if(yi < 0) continue;
+                
+                const x = marginLeft + xi * scaleX;
+                const y = canvas.height - marginBottom - yi * scaleY;
+                
+                if(i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+        }
+        ctx.stroke();
+        
+    } else if(motion === 'circular') {
+        // 圆周运动轨迹
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const {r} = params;
+        const radius = Math.min(canvas.width, canvas.height) * 0.3;
+        
+        // 绘制坐标轴
+        ctx.strokeStyle = '#ccc';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, centerY);
+        ctx.lineTo(canvas.width, centerY);
+        ctx.moveTo(centerX, 0);
+        ctx.lineTo(centerX, canvas.height);
+        ctx.stroke();
+        
+        // 绘制圆
+        ctx.strokeStyle = '#667eea';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        ctx.stroke();
+        
+        // 绘制半径
+        ctx.strokeStyle = '#999';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.lineTo(centerX + radius, centerY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // 标注
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 14px Arial';
+        ctx.fillText('r', centerX + radius / 2 - 5, centerY - 10);
+        
+        // 标注一个质点位置
+        const angle = Math.PI / 4;
+        const px = centerX + radius * Math.cos(angle);
+        const py = centerY + radius * Math.sin(angle);
+        
+        ctx.beginPath();
+        ctx.arc(px, py, 6, 0, 2 * Math.PI);
+        ctx.fillStyle = '#ff6b6b';
+        ctx.fill();
+        
+        // 绘制速度向量(切线方向)
+        const vx = -Math.sin(angle) * 40;
+        const vy = Math.cos(angle) * 40;
+        drawArrow(ctx, px, py, px + vx, py + vy, '#4ecdc4');
+        ctx.fillStyle = '#4ecdc4';
+        ctx.font = 'bold 12px Arial';
+        ctx.fillText('v', px + vx + 10, py + vy - 5);
+        
+        // 绘制向心加速度(指向圆心)
+        const ax = -Math.cos(angle) * 35;
+        const ay = -Math.sin(angle) * 35;
+        drawArrow(ctx, px, py, px + ax, py + ay, '#ffe66d');
+        ctx.fillStyle = '#ffe66d';
+        ctx.fillText('aₙ', px + ax - 20, py + ay);
+    }
+}
+
+// 绘制运动动画
+function drawAnimation(params, result) {
+    const canvas = document.getElementById('animation-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    
+    if(animationId) cancelAnimationFrame(animationId);
+    
+    const motion = currentMotion;
+    
+    if(motion === 'circular') {
+        animateCircular(ctx, canvas, params);
+    } else if(motion === 'horizontal' || motion === 'projectile') {
+        animateProjectile(ctx, canvas, params);
+    } else if(motion === 'freefall' || motion === 'vertical-up') {
+        animateVertical(ctx, canvas, params);
+    } else {
+        animateHorizontal(ctx, canvas, params);
+    }
+}
+
+// 圆周运动动画
+function animateCircular(ctx, canvas, params) {
+    const {r, T} = params;
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = Math.min(canvas.width, canvas.height) * 0.35;
+    let angle = 0;
+    
+    const animate = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // 坐标轴
+        ctx.strokeStyle = '#ccc';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, centerY);
+        ctx.lineTo(canvas.width, centerY);
+        ctx.moveTo(centerX, 0);
+        ctx.lineTo(centerX, canvas.height);
+        ctx.stroke();
+        
+        // 轨道
+        ctx.strokeStyle = '#ddd';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        ctx.stroke();
+        
+        // 圆心
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 4, 0, 2 * Math.PI);
+        ctx.fillStyle = '#667eea';
+        ctx.fill();
+        
+        // 物体位置
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
+        
+        // 物体
+        ctx.beginPath();
+        ctx.arc(x, y, 10, 0, 2 * Math.PI);
+        ctx.fillStyle = '#ff6b6b';
+        ctx.fill();
+        
+        // 速度向量
+        const vx = -Math.sin(angle) * 35;
+        const vy = Math.cos(angle) * 35;
+        drawArrow(ctx, x, y, x + vx, y + vy, '#4ecdc4');
+        
+        // 向心加速度
+        const ax = -Math.cos(angle) * 30;
+        const ay = -Math.sin(angle) * 30;
+        drawArrow(ctx, x, y, x + ax, y + ay, '#ffe66d');
+        
+        angle += (2 * Math.PI) / (T * 60);
+        animationId = requestAnimationFrame(animate);
+    };
+    
+    animate();
+}
+
+// 抛体运动动画
+function animateProjectile(ctx, canvas, params) {
+    const motion = currentMotion;
+    const g = 9.8;
+    let t = 0;
+    let maxT, vx, vy0, h0 = 0;
+    
+    if(motion === 'horizontal') {
+        const {v0, h} = params;
+        maxT = Math.sqrt(2 * h / g);
+        vx = v0;
+        vy0 = 0;
+        h0 = h;
+    } else {
+        const {v0, angle} = params;
+        const theta = (angle * Math.PI) / 180;
+        vx = v0 * Math.cos(theta);
+        vy0 = v0 * Math.sin(theta);
+        maxT = (2 * vy0) / g;
+    }
+    
+    const maxX = vx * maxT;
+    const maxY = h0 + (vy0 * vy0) / (2 * g);
+    const scale = Math.min((canvas.width - 60) / maxX, (canvas.height - 60) / maxY) * 0.8;
+    
+    const animate = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // 坐标轴
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(30, canvas.height - 30);
+        ctx.lineTo(canvas.width - 10, canvas.height - 30);
+        ctx.moveTo(30, canvas.height - 30);
+        ctx.lineTo(30, 10);
+        ctx.stroke();
+        
+        // 箭头
+        drawAxisArrow(ctx, canvas.width - 10, canvas.height - 30, 'x');
+        drawAxisArrow(ctx, 30, 10, 'y');
+        
+        // 刻度
+        for(let i = 0; i <= 5; i++) {
+            const xPos = 30 + (i / 5) * (canvas.width - 50);
+            const yPos = canvas.height - 30 - (i / 5) * (canvas.height - 50);
+            
+            ctx.fillStyle = '#666';
+            ctx.font = '11px monospace';
+            ctx.fillText((i / 5 * maxX).toFixed(0), xPos - 10, canvas.height - 15);
+            ctx.fillText((i / 5 * maxY).toFixed(0), 5, yPos + 4);
+        }
+        
+        // 计算当前位置
+        const x = vx * t;
+        const y = h0 + vy0 * t - 0.5 * g * t * t;
+        
+        if(y < 0 || t > maxT) {
+            t = 0;
+        }
+        
+        const canvasX = 30 + x * scale;
+        const canvasY = canvas.height - 30 - y * scale;
+        
+        // 绘制轨迹
+        ctx.strokeStyle = 'rgba(102, 126, 234, 0.4)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for(let i = 0; i <= t * 60; i++) {
+            const ti = i / 60;
+            const xi = vx * ti;
+            const yi = h0 + vy0 * ti - 0.5 * g * ti * ti;
+            const cxi = 30 + xi * scale;
+            const cyi = canvas.height - 30 - yi * scale;
+            if(i === 0) ctx.moveTo(cxi, cyi);
+            else ctx.lineTo(cxi, cyi);
+        }
+        ctx.stroke();
+        
+        // 绘制物体
+        ctx.beginPath();
+        ctx.arc(canvasX, canvasY, 12, 0, 2 * Math.PI);
+        ctx.fillStyle = '#ff6b6b';
+        ctx.fill();
+        
+        // 速度向量
+        const v_x = vx * scale / 5;
+        const v_y = (vy0 - g * t) * scale / 5;
+        drawArrow(ctx, canvasX, canvasY, canvasX + v_x, canvasY - v_y, '#4ecdc4');
+        
+        t += 0.02;
+        animationId = requestAnimationFrame(animate);
+    };
+    
+    animate();
+}
+
+// 竖直运动动画
+function animateVertical(ctx, canvas, params) {
+    const motion = currentMotion;
+    const g = 9.8;
+    let t = 0;
+    let maxT, v0;
+    
+    if(motion === 'freefall') {
+        maxT = params.t;
+        v0 = 0;
+    } else {
+        v0 = params.v0;
+        maxT = params.t;
+    }
+    
+    const maxH = motion === 'freefall' ? 0.5 * g * maxT * maxT : (v0 * v0) / (2 * g) * 1.2;
+    const scale = (canvas.height - 60) / maxH;
+    
+    const animate = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // 坐标轴
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(canvas.width / 2, canvas.height - 20);
+        ctx.lineTo(canvas.width / 2, 10);
+        ctx.stroke();
+        
+        drawAxisArrow(ctx, canvas.width / 2, 10, 'h');
+        
+        // 刻度
+        for(let i = 0; i <= 5; i++) {
+            const h = (i / 5) * maxH;
+            const yPos = canvas.height - 20 - h * scale;
+            
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2 - 5, yPos);
+            ctx.lineTo(canvas.width / 2 + 5, yPos);
+            ctx.strokeStyle = '#999';
+            ctx.stroke();
+            
+            ctx.fillStyle = '#666';
+            ctx.font = '11px monospace';
+            ctx.fillText(h.toFixed(1), canvas.width / 2 + 10, yPos + 4);
+        }
+        
+        // 计算高度
+        let h;
+        if(motion === 'freefall') {
+            h = 0.5 * g * t * t;
+        } else {
+            h = v0 * t - 0.5 * g * t * t;
+            if(h < 0) h = 0;
+        }
+        
+        if(t > maxT) t = 0;
+        
+        const canvasY = canvas.height - 20 - h * scale;
+        
+        // 绘制物体
+        ctx.beginPath();
+        ctx.arc(canvas.width / 2, canvasY, 12, 0, 2 * Math.PI);
+        ctx.fillStyle = '#ff6b6b';
+        ctx.fill();
+        
+        // 速度向量
+        const v = motion === 'freefall' ? g * t : v0 - g * t;
+        const arrowLen = Math.abs(v) * scale / 8;
+        const direction = motion === 'freefall' ? 1 : (v >= 0 ? -1 : 1);
+        drawArrow(ctx, canvas.width / 2, canvasY, canvas.width / 2, canvasY + direction * arrowLen, '#4ecdc4');
+        
+        t += 0.02;
+        animationId = requestAnimationFrame(animate);
+    };
+    
+    animate();
+}
+
+// 水平运动动画
+function animateHorizontal(ctx, canvas, params) {
+    const motion = currentMotion;
+    let t = 0;
+    let maxT, v0, a = 0;
+    
+    if(motion === 'uniform') {
+        v0 = params.v0;
+        maxT = params.t;
+    } else if(motion === 'uniform-acc') {
+        v0 = params.v0;
+        a = params.a;
+        maxT = params.t;
+    } else {
+        v0 = params.v0;
+        a = -params.a;
+        maxT = Math.min(params.t, v0 / params.a);
+    }
+    
+    const maxS = Math.abs(v0 * maxT + 0.5 * a * maxT * maxT);
+    const scale = (canvas.width - 80) / (maxS || 50);
+    
+    const animate = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // 坐标轴
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(40, canvas.height / 2);
+        ctx.lineTo(canvas.width - 10, canvas.height / 2);
+        ctx.stroke();
+        
+        drawAxisArrow(ctx, canvas.width - 10, canvas.height / 2, 'S');
+        
+        // 刻度
+        for(let i = 0; i <= 5; i++) {
+            const s = (i / 5) * maxS;
+            const xPos = 40 + (i / 5) * (canvas.width - 60);
+            
+            ctx.beginPath();
+            ctx.moveTo(xPos, canvas.height / 2 - 5);
+            ctx.lineTo(xPos, canvas.height / 2 + 5);
+            ctx.strokeStyle = '#999';
+            ctx.stroke();
+            
+            ctx.fillStyle = '#666';
+            ctx.font = '11px Arial';
+            ctx.fillText(s.toFixed(0), xPos - 10, canvas.height / 2 + 20);
+        }
+        
+        // 计算位置
+        const s = v0 * t + 0.5 * a * t * t;
+        
+        if(t > maxT) t = 0;
+        
+        const canvasX = 40 + (s / (maxS || 1)) * (canvas.width - 60);
+        
+        // 绘制物体
+        ctx.beginPath();
+        ctx.rect(canvasX - 15, canvas.height / 2 - 15, 30, 30);
+        ctx.fillStyle = '#ff6b6b';
+        ctx.fill();
+        
+        // 速度标签
+        const v = v0 + a * t;
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 13px monospace';
+        ctx.fillText(`v = ${v.toFixed(1)} m/s`, canvasX - 40, canvas.height / 2 - 25);
+        
+        t += 0.03;
+        animationId = requestAnimationFrame(animate);
+    };
+    
+    animate();
+}
+
+// 绘制箭头辅助函数
+function drawArrow(ctx, x1, y1, x2, y2, color) {
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    
+    const angle = Math.atan2(y2 - y1, x2 - x1);
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - 10 * Math.cos(angle - Math.PI / 6), y2 - 10 * Math.sin(angle - Math.PI / 6));
+    ctx.lineTo(x2 - 10 * Math.cos(angle + Math.PI / 6), y2 - 10 * Math.sin(angle + Math.PI / 6));
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+}
+
+// 绘制坐标轴箭头
+function drawAxisArrow(ctx, x, y, label) {
+    if(label === 'x' || label === 'S') {
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x - 8, y - 5);
+        ctx.lineTo(x - 8, y + 5);
+        ctx.closePath();
+    } else {
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x - 5, y + 8);
+        ctx.lineTo(x + 5, y + 8);
+        ctx.closePath();
+    }
+    ctx.fillStyle = '#333';
+    ctx.fill();
+    
+    ctx.fillStyle = '#333';
+    ctx.font = 'bold 14px Arial';
+    if(label === 'x' || label === 'S') {
+        ctx.fillText(label, x + 5, y + 15);
+    } else {
+        ctx.fillText(label, x + 10, y + 5);
+    }
+}
+</script>
+
+</body>
+</html>
+
+
